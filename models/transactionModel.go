@@ -7,4 +7,5 @@ type Transaction struct {
 	Name   string  `json:"name"`
 	Amount float64 `json:"amount"`
 	Type   string  `json:"type"`
+	UserID uint    `json:"user_id" gorm:"index"`
 }

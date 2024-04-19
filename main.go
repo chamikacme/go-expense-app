@@ -24,15 +24,15 @@ func main() {
 
 	router.GET("/validate", middleware.RequireAuth, controllers.Validate)
 
-	router.POST("/transactions", controllers.CreateTransaction)
+	router.POST("/transactions", middleware.RequireAuth, controllers.CreateTransaction)
 
-	router.GET("/transactions", controllers.GetTransactions)
+	router.GET("/transactions", middleware.RequireAuth, controllers.GetTransactions)
 
-	router.GET("/transactions/:id", controllers.GetTransaction)
+	router.GET("/transactions/:id", middleware.RequireAuth, controllers.GetTransaction)
 
-	router.PATCH("/transactions/:id", controllers.UpdateTransaction)
+	router.PATCH("/transactions/:id", middleware.RequireAuth, controllers.UpdateTransaction)
 
-	router.DELETE("/transactions/:id", controllers.DeleteTransaction)
+	router.DELETE("/transactions/:id", middleware.RequireAuth, controllers.DeleteTransaction)
 
 	router.Run()
 

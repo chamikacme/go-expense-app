@@ -11,7 +11,11 @@ func CreateTransaction(c *gin.Context) {
 
 	var transaction models.Transaction
 
+	user, _ := c.Get("user")
+
 	c.BindJSON(&transaction)
+
+	transaction.UserID = user.(models.User).ID
 
 	result := initializers.DB.Create(&transaction)
 
@@ -27,9 +31,11 @@ func CreateTransaction(c *gin.Context) {
 
 func GetTransactions(c *gin.Context) {
 
+	user, _ := c.Get("user")
+
 	var transactions []models.Transaction
 
-	result := initializers.DB.Find(&transactions)
+	result := initializers.DB.Where("user_id = ?", user.(models.User).ID).Find(&transactions)
 
 	if result.Error != nil {
 		c.JSON(400, gin.H{
@@ -43,9 +49,11 @@ func GetTransactions(c *gin.Context) {
 
 func GetTransaction(c *gin.Context) {
 
+	user, _ := c.Get("user")
+
 	var transaction models.Transaction
 
-	result := initializers.DB.First(&transaction, c.Param("id"))
+	result := initializers.DB.Where("user_id = ? AND id = ?", user.(models.User).ID, c.Param("id")).First(&transaction)
 
 	if result.Error != nil {
 		c.JSON(400, gin.H{
@@ -59,9 +67,11 @@ func GetTransaction(c *gin.Context) {
 
 func UpdateTransaction(c *gin.Context) {
 
+	user, _ := c.Get("user")
+
 	var transaction models.Transaction
 
-	result := initializers.DB.First(&transaction, c.Param("id"))
+	result := initializers.DB.Where("user_id = ? AND id = ?", user.(models.User).ID, c.Param("id")).First(&transaction)
 
 	if result.Error != nil {
 		c.JSON(400, gin.H{
@@ -86,9 +96,11 @@ func UpdateTransaction(c *gin.Context) {
 
 func DeleteTransaction(c *gin.Context) {
 
+	user, _ := c.Get("user")
+
 	var transaction models.Transaction
 
-	result := initializers.DB.First(&transaction, c.Param("id"))
+	result := initializers.DB.Where("user_id = ? AND id = ?", user.(models.User).ID, c.Param("id")).First(&transaction)
 
 	if result.Error != nil {
 		c.JSON(400, gin.H{

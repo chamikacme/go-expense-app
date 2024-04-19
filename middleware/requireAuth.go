@@ -49,11 +49,13 @@ func RequireAuth(c *gin.Context) {
 
 		// Find the user and attach it to request
 		var user models.User
-		initializers.DB.First(&user, claims["id"])
+		initializers.DB.First(&user, claims["sub"])
 
 		if user.ID == 0 {
 			c.AbortWithStatus(401)
 		}
+
+		user.Password = ""
 
 		c.Set("user", user)
 

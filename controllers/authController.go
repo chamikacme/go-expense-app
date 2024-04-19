@@ -122,7 +122,8 @@ func Logout(c *gin.Context) {
 }
 
 func Validate(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"message": "Token is valid",
-	})
+	user, _ := c.Get("user")
+
+	c.JSON(http.StatusOK, user)
+
 }
